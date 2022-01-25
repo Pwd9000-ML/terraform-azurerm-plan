@@ -2,11 +2,11 @@ name: 'Create a Terraform plan for AZURE'
 description: 'Create a Terraform plan with AzureRM backend and uploads plan as workspace artifact (Used with: `Pwd9000-ML/terraform-azurerm-apply`)'
 
 inputs:
-  #path:
-  #  description: '(Optional) Specifies the path of the root terraform module.'
-  #  required: false
-  #  type: string
-  #  default: "."
+  path:
+    description: '(Optional) Specifies the path of the root terraform module.'
+    required: false
+    type: string
+    default: "."
 
   tf_version:
     description: '(Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
@@ -98,29 +98,34 @@ runs:
       shell: bash
       id: fmt
       run: terraform fmt --check
+      workingdirectory: ${{ inputs.path }}
 
     - name: Terraform Init
       shell: bash
       id: init
       run: terraform init --backend-config="storage_account_name=${{ inputs.az_storage_acc }}" --backend-config="container_name=${{ inputs.az_container_name }}" --backend-config="resource_group_name=${{ inputs.az_resource_group }}" --backend-config="key=${{ inputs.tf_key }}"
+      workingdirectory: ${{ inputs.path }}
 
     - name: Terraform Validate
       shell: bash
       id: validate
       run: terraform validate
+      workingdirectory: ${{ inputs.path }}
 
     - name: Terraform Plan
       shell: bash
       id: plan
       run: terraform plan --var-file=${{ inputs.tf_vars_file }} --out=plan.tfplan
+      workingdirectory: ${{ inputs.path }}
 
     - name: Compress TF Plan artifact
       shell: bash
       run: zip -r ${{ inputs.tf_key }}.zip ./*
+      workingdirectory: ${{ inputs.path }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: "${{ inputs.tf_key }}"
-        path: "${{ inputs.tf_key }}.zip"
+        path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
         retention-days: 5
