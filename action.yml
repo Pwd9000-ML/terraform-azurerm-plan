@@ -95,27 +95,33 @@ runs:
         terraform_version: ${{ inputs.tf_version }}
 
     - name: Terraform Format
+      shell: bash
       id: fmt
       run: terraform fmt --check
 
     - name: Terraform Init
+      shell: bash
       id: init
       run: terraform init --backend-config="storage_account_name=$STORAGE_ACCOUNT" --backend-config="container_name=$CONTAINER_NAME" --backend-config="resource_group_name=$RESOURCE_GROUP" --backend-config="key=$TF_KEY"
 
     - name: Terraform Validate
+      shell: bash
       id: validate
       run: terraform validate
 
     - name: Terraform Plan
+      shell: bash
       id: plan
       run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
       continue-on-error: true
 
     - name: Terraform Plan Status
+      shell: bash
       if: steps.plan.outcome == 'failure'
       run: exit 1
 
     - name: Compress TF Plan artifact
+      shell: bash
       run: zip -r ${{ inputs.tf_key }}.zip ./*
 
     - name: Upload Artifact
