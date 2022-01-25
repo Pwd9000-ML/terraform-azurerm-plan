@@ -1,0 +1,138 @@
+name: 'Create a Terraform plan for AZURE' 
+description: 'Create a Terraform plan with AzureRM backend and uploads plan as workspace artifact (Used with: `Pwd9000-ML/terraform-azurerm-apply`)'
+
+inputs:
+  path:
+    description: '(Optional) Specifies the path of the root terraform module.'
+    required: false
+    type: string
+    default: "."
+
+  tf_version:
+    description: '(Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
+    required: false
+    type: string
+    default: latest
+
+  az_resource_group:
+    description: '(Required) Specifies the Azure Resource Group where the backend storage account is hosted.'
+    required: true
+    type: string
+
+  az_storage_acc:
+    description: '(Required) Specifies the Azure Storage Account where the backend state is hosted.'
+    required: true
+    type: string
+
+  az_container_name:
+    description: '(Required) Specifies the Azure Storage account container where backend Terraform state is hosted.'
+    required: true
+    type: string
+
+  tf_key:
+    description: '(Required) Specifies the Terraform state file name for this plan.'
+    required: true
+    type: string
+
+#  gh_environment:
+#    description: '(Optional) Specifies the GitHub deployment environment.'
+#    required: false
+#    type: string
+#    default: null
+
+  tf_vars_file:
+    description: '(Required) Specifies the Terraform TFVARS file.'
+    required: true
+    type: string
+
+  enable_TFSEC:
+    description: '(Optional) Enables TFSEC IaC scans and code quality checks on Terraform configurations'
+    required: false
+    type: bool
+    default: false
+
+secrets:
+  arm_client_id:
+    description: 'Specifies the Azure ARM CLIENT ID.'
+    required: true
+
+  arm_client_secret:
+    description: 'Specifies the Azure ARM CLIENT SECRET.'
+    required: true
+
+  arm_subscription_id:
+    description: 'Specifies the Azure ARM SUBSCRIPTION ID.'
+    required: true
+
+  arm_tenant_id:
+    description: 'Specifies the Azure ARM TENANT ID.'
+    required: true
+
+# https://actions-cool.github.io/github-action-branding/
+branding:
+  icon: 'upload'
+  color: 'blue'
+
+runs:
+  using: "composite"
+
+  steps:
+      - name: Scan IaC - tfsec
+      if: ${{ inputs.enable_TFSEC == true }}
+      uses: tfsec/tfsec-sarif-action@v0.0.6
+      with:
+        sarif_file: tfsec.sarif         
+
+    - name: Upload SARIF file
+      if: ${{ inputs.enable_TFSEC == true }}
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: tfsec.sarif  
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1.3.2
+      with:
+        terraform_version: ${{ inputs.tf_version }}
+
+    - name: Terraform Format
+      shell: bash
+      id: fmt
+      run: terraform fmt --check
+      working-directory: ${{ inputs.path }}
+
+    - name: Terraform Init
+      shell: bash
+      id: init
+      run: terraform init --backend-config="storage_account_name=$STORAGE_ACCOUNT" --backend-config="container_name=$CONTAINER_NAME" --backend-config="resource_group_name=$RESOURCE_GROUP" --backend-config="key=$TF_KEY"
+      working-directory: ${{ inputs.path }}
+
+    - name: Terraform Validate
+      shell: bash
+      id: validate
+      run: terraform validate
+      working-directory: ${{ inputs.path }}
+
+    - name: Terraform Plan
+      shell: bash
+      id: plan
+      run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+      continue-on-error: true
+      working-directory: ${{ inputs.path }}
+
+    - name: Terraform Plan Status
+      if: steps.plan.outcome == 'failure'
+      shell: bash
+      run: exit 1
+      working-directory: ${{ inputs.path }}
+
+    - name: Compress TF Plan artifact
+      shell: bash
+      run: zip -r ${{ inputs.tf_key }}.zip ./*
+      working-directory: ${{ inputs.path }}
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: "${{ inputs.tf_key }}"
+        path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
+        retention-days: 5
