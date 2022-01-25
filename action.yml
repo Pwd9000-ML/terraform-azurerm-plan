@@ -85,10 +85,10 @@ runs:
       shell: bash
       id: vars
       run: |
-          export ARM_CLIENT_ID=::add-mask::${{ inputs.arm_client_id }}
-          export ARM_CLIENT_SECRET=::add-mask::${{ inputs.arm_client_secret }}
-          export ARM_SUBSCRIPTION_ID=::add-mask::${{ inputs.arm_subscription_id }}
-          export ARM_TENANT_ID=::add-mask::${{ inputs.arm_tenant_id }}
+          export ARM_CLIENT_ID=${{ inputs.arm_client_id }}
+          export ARM_CLIENT_SECRET=${{ inputs.arm_client_secret }}
+          export ARM_SUBSCRIPTION_ID=${{ inputs.arm_subscription_id }}
+          export ARM_TENANT_ID=${{ inputs.arm_tenant_id }}
       working-directory: ${{ inputs.path }}
 
     - name: Scan IaC - tfsec
