@@ -52,20 +52,24 @@ inputs:
     default: false
 
 #secrets:
-  arm_client_id:
-    description: 'Specifies the Azure ARM CLIENT ID.'
-    required: true
+  #arm_client_id:
+  #  description: 'Specifies the Azure ARM CLIENT ID.'
+  #  required: true
 
-  arm_client_secret:
-    description: 'Specifies the Azure ARM CLIENT SECRET.'
-    required: true
+  #arm_client_secret:
+  #  description: 'Specifies the Azure ARM CLIENT SECRET.'
+  #  required: true
 
-  arm_subscription_id:
-    description: 'Specifies the Azure ARM SUBSCRIPTION ID.'
-    required: true
+  #arm_subscription_id:
+  #  description: 'Specifies the Azure ARM SUBSCRIPTION ID.'
+  #  required: true
 
-  arm_tenant_id:
-    description: 'Specifies the Azure ARM TENANT ID.'
+  #arm_tenant_id:
+  #  description: 'Specifies the Azure ARM TENANT ID.'
+  #  required: true
+
+  azure_credentials:
+    description: 'Specify Azure creds'
     required: true
 
 # https://actions-cool.github.io/github-action-branding/
@@ -77,6 +81,12 @@ runs:
   using: "composite"
 
   steps:
+    - name: Log into Azure using github secret AZURE_CREDENTIALS
+      uses: Azure/login@v1
+      with:
+        creds: ${{ inputs.azure_credentials }}
+        enable-AzPSSession: true
+
     - name: Scan IaC - tfsec
       if: ${{ inputs.enable_TFSEC == true }}
       uses: tfsec/tfsec-sarif-action@v0.0.6
