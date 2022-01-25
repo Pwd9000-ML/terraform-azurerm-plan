@@ -102,7 +102,7 @@ runs:
     - name: Terraform Init
       shell: bash
       id: init
-      run: terraform init --backend-config="storage_account_name=$STORAGE_ACCOUNT" --backend-config="container_name=$CONTAINER_NAME" --backend-config="resource_group_name=$RESOURCE_GROUP" --backend-config="key=$TF_KEY"
+      run: terraform init --backend-config="storage_account_name=${{ inputs.az_storage_acc }}" --backend-config="container_name=${{ inputs.az_container_name }}" --backend-config="resource_group_name=${{ inputs.az_resource_group }}" --backend-config="key=${{ inputs.tf_key }}"
 
     - name: Terraform Validate
       shell: bash
@@ -112,7 +112,7 @@ runs:
     - name: Terraform Plan
       shell: bash
       id: plan
-      run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+      run: terraform plan --var-file=${{ inputs.tf_vars_file }} --out=plan.tfplan
 
     - name: Compress TF Plan artifact
       shell: bash
@@ -122,5 +122,5 @@ runs:
       uses: actions/upload-artifact@v2
       with:
         name: "${{ inputs.tf_key }}"
-        path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
+        path: "${{ inputs.tf_key }}.zip"
         retention-days: 5
