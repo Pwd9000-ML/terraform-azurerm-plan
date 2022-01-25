@@ -85,7 +85,6 @@ runs:
       uses: Azure/login@v1
       with:
         creds: ${{ inputs.azure_credentials }}
-        enable-AzPSSession: true
 
     - name: Scan IaC - tfsec
       if: ${{ inputs.enable_TFSEC == true }}
