@@ -96,7 +96,7 @@ runs:
       with:
         azcliversion: 2.30.0
         inlineScript: |
-          az login --service-principal -u {{ inputs.arm_client_id }} -p ${{ inputs.arm_client_secret }} --tenant ${{ inputs.arm_tenant_id }}
+          az login --service-principal -u ${{ inputs.arm_client_id }} -p ${{ inputs.arm_client_secret }} --tenant ${{ inputs.arm_tenant_id }}
           az account set --subscription=${{ inputs.arm_subscription_id }}
 
     - name: Scan IaC - tfsec
