@@ -68,9 +68,9 @@ inputs:
     description: 'Specifies the Azure ARM TENANT ID.'
     required: true
 
-  azure_credentials:
-    description: 'Specify Azure creds'
-    required: true
+  #azure_credentials:
+  #  description: 'Specify Azure creds'
+  #  required: true
 
 # https://actions-cool.github.io/github-action-branding/
 branding:
