@@ -81,22 +81,22 @@ runs:
   using: "composite"
 
   steps:
-    #- name: Set Environment VARS
-    #  shell: bash
-    #  id: vars
-    #  run: |
-    #      export ARM_CLIENT_ID=${{ inputs.arm_client_id }}
-    #      export ARM_CLIENT_SECRET=${{ inputs.arm_client_secret }}
-    #      export ARM_SUBSCRIPTION_ID=${{ inputs.arm_subscription_id }}
-    #      export ARM_TENANT_ID=${{ inputs.arm_tenant_id }}
-    #  working-directory: ${{ inputs.path }}
+    - name: Set Environment VARS
+      shell: bash
+      id: vars
+      run: |
+          $ export ARM_CLIENT_ID="${{ inputs.arm_client_id }}"
+          $ export ARM_CLIENT_SECRET="${{ inputs.arm_client_secret }}"
+          $ export ARM_SUBSCRIPTION_ID="${{ inputs.arm_subscription_id }}"
+          $ export ARM_TENANT_ID="${{ inputs.arm_tenant_id }}"
+      working-directory: ${{ inputs.path }}
 
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        inlineScript: |
-          az login --service-principal -u ${{ inputs.arm_client_id }} -p ${{ inputs.arm_client_secret }} --tenant ${{ inputs.arm_tenant_id }}
-          az account set --subscription=${{ inputs.arm_subscription_id }}
+    #- name: Azure CLI script
+    #  uses: azure/CLI@v1
+    #  with:
+    #    inlineScript: |
+    #      az login --service-principal -u ${{ inputs.arm_client_id }} -p ${{ inputs.arm_client_secret }} --tenant ${{ inputs.arm_tenant_id }}
+    #      az account set --subscription=${{ inputs.arm_subscription_id }}
 
     - name: Scan IaC - tfsec
       if: ${{ inputs.enable_TFSEC == true }}
