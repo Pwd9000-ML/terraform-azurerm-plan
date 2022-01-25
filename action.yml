@@ -2,11 +2,11 @@ name: 'Create a Terraform plan for AZURE'
 description: 'Create a Terraform plan with AzureRM backend and uploads plan as workspace artifact (Used with: `Pwd9000-ML/terraform-azurerm-apply`)'
 
 inputs:
-  path:
-    description: '(Optional) Specifies the path of the root terraform module.'
-    required: false
-    type: string
-    default: "."
+  #path:
+  #  description: '(Optional) Specifies the path of the root terraform module.'
+  #  required: false
+  #  type: string
+  #  default: "."
 
   tf_version:
     description: '(Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
@@ -82,56 +82,41 @@ runs:
       uses: tfsec/tfsec-sarif-action@v0.0.6
       with:
         sarif_file: tfsec.sarif
-      working-directory: ${{ inputs.path }}
 
     - name: Upload SARIF file
       if: ${{ inputs.enable_TFSEC == true }}
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: tfsec.sarif
-      working-directory: ${{ inputs.path }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1.3.2
       with:
         terraform_version: ${{ inputs.tf_version }}
-      working-directory: ${{ inputs.path }}
 
     - name: Terraform Format
-      shell: bash
       id: fmt
       run: terraform fmt --check
-      working-directory: ${{ inputs.path }}
 
     - name: Terraform Init
-      shell: bash
       id: init
       run: terraform init --backend-config="storage_account_name=$STORAGE_ACCOUNT" --backend-config="container_name=$CONTAINER_NAME" --backend-config="resource_group_name=$RESOURCE_GROUP" --backend-config="key=$TF_KEY"
-      working-directory: ${{ inputs.path }}
 
     - name: Terraform Validate
-      shell: bash
       id: validate
       run: terraform validate
-      working-directory: ${{ inputs.path }}
 
     - name: Terraform Plan
-      shell: bash
       id: plan
       run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
       continue-on-error: true
-      working-directory: ${{ inputs.path }}
 
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
-      shell: bash
       run: exit 1
-      working-directory: ${{ inputs.path }}
 
     - name: Compress TF Plan artifact
-      shell: bash
       run: zip -r ${{ inputs.tf_key }}.zip ./*
-      working-directory: ${{ inputs.path }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
