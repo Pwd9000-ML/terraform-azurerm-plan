@@ -52,21 +52,21 @@ inputs:
     default: false
 
 #secrets:
-  #arm_client_id:
-  #  description: 'Specifies the Azure ARM CLIENT ID.'
-  #  required: true
+  arm_client_id:
+    description: 'Specifies the Azure ARM CLIENT ID.'
+    required: true
 
-  #arm_client_secret:
-  #  description: 'Specifies the Azure ARM CLIENT SECRET.'
-  #  required: true
+  arm_client_secret:
+    description: 'Specifies the Azure ARM CLIENT SECRET.'
+    required: true
 
-  #arm_subscription_id:
-  #  description: 'Specifies the Azure ARM SUBSCRIPTION ID.'
-  #  required: true
+  arm_subscription_id:
+    description: 'Specifies the Azure ARM SUBSCRIPTION ID.'
+    required: true
 
-  #arm_tenant_id:
-  #  description: 'Specifies the Azure ARM TENANT ID.'
-  #  required: true
+  arm_tenant_id:
+    description: 'Specifies the Azure ARM TENANT ID.'
+    required: true
 
   azure_credentials:
     description: 'Specify Azure creds'
@@ -81,10 +81,15 @@ runs:
   using: "composite"
 
   steps:
-    - name: Log into Azure using github secret AZURE_CREDENTIALS
-      uses: Azure/login@v1
-      with:
-        creds: ${{ inputs.azure_credentials }}
+    - name: Set Environment VARS
+      shell: bash
+      id: vars
+      run: |
+          export ARM_CLIENT_ID=::add-mask::${{ inputs.arm_client_id }}
+          export ARM_CLIENT_SECRET=::add-mask::${{ inputs.arm_client_secret }}
+          export ARM_SUBSCRIPTION_ID=::add-mask::${{ inputs.arm_subscription_id }}
+          export ARM_TENANT_ID=::add-mask::${{ inputs.arm_tenant_id }}
+      working-directory: ${{ inputs.path }}
 
     - name: Scan IaC - tfsec
       if: ${{ inputs.enable_TFSEC == true }}
