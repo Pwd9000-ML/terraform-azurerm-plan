@@ -95,6 +95,7 @@ runs:
       uses: hashicorp/setup-terraform@v1.3.2
       with:
         terraform_version: ${{ inputs.tf_version }}
+      working-directory: ${{ inputs.path }}
 
     - name: Terraform Format
       shell: bash
