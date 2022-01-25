@@ -85,10 +85,10 @@ runs:
       shell: bash
       id: vars
       run: |
-          $ export ARM_CLIENT_ID="${{ inputs.arm_client_id }}"
-          $ export ARM_CLIENT_SECRET="${{ inputs.arm_client_secret }}"
-          $ export ARM_SUBSCRIPTION_ID="${{ inputs.arm_subscription_id }}"
-          $ export ARM_TENANT_ID="${{ inputs.arm_tenant_id }}"
+          echo "ARM_CLIENT_ID=${{ inputs.arm_client_id }}" >> $GITHUB_ENV
+          echo "ARM_SECRET_ID=${{ inputs.arm_client_secret }}" >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=${{ inputs.arm_subscription_id }}" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=${{ inputs.arm_tenant_id }}" >> $GITHUB_ENV
       working-directory: ${{ inputs.path }}
 
     #- name: Azure CLI script
