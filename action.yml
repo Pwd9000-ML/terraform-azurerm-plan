@@ -51,7 +51,7 @@ inputs:
     type: bool
     default: false
 
-secrets:
+#secrets:
   arm_client_id:
     description: 'Specifies the Azure ARM CLIENT ID.'
     required: true
