@@ -10,7 +10,7 @@ See my [detailed tutorial]() for more usage details.
 
 ```yaml
 steps:
-    - name: Dev TF Plan
+  - name: Dev TF Plan
     uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.0
     with:
         path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
