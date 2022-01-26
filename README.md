@@ -1,6 +1,6 @@
 # Terraform Plan - GitHub Action (terraform-azurerm-plan)
 
-Connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workspace artifact. (Additionally TFSEC IaC scanning can be enabled).  
+Connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workflow artifact. (Additionally TFSEC IaC scanning can be enabled).  
 
 See my [detailed tutorial]() for more usage details.  
 
@@ -78,7 +78,7 @@ jobs:
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}             ## (Required) ARM Tenant ID
 ```
 
-The terraform plan will be created and is compressed and published to the workspace as an artifact using the same name of the input `tf_key`:  
+The terraform plan will be created and is compressed and published to the workflow as an artifact using the same name of the input `tf_key`:  
 
 ![image.png](https://raw.githubusercontent.com/Pwd9000-ML/terraform-azurerm-plan/master/assets/artifact.png)  
 
@@ -109,7 +109,7 @@ The terraform apply action will download and apply the artifact created by the p
 
 None.  
 
-* Plan is uploaded to workspace as an artifact. (Can be deployed using `Pwd9000-ML/terraform-azurerm-apply` Action.)
+* Plan is uploaded to workflow as an artifact. (Can be deployed using `Pwd9000-ML/terraform-azurerm-apply` Action.)
 
 ## Versions of runner that can be used
 
