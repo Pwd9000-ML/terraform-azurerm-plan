@@ -1,5 +1,5 @@
 name: 'Create a Terraform plan for AZURE' 
-description: 'Create a Terraform plan with AzureRM backend and uploads plan as workspace artifact (Used with: `Pwd9000-ML/terraform-azurerm-apply`)'
+description: 'Terraform plan with AzureRM backend - uploads plan as workspace artifact (Used with: `Pwd9000-ML/terraform-azurerm-apply`)'
 
 inputs:
   path:
