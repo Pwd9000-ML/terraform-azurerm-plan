@@ -1,11 +1,10 @@
 # Terraform Plan - GitHub Action (terraform-azurerm-plan)
 
-GitHub Action - Creates a Terraform plan with AzureRM backend and uploads plan as workspace artifact.  
 Connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workspace artifact. (Additionally TFSEC IaC scanning can be enabled).  
 
 See my [detailed tutorial]() for more usage details.  
 
-**NOTE:** Can be used independently as well with Action: **[Pwd9000-ML/terraform-azurerm-apply](https://github.com/Pwd9000-ML/terraform-azurerm-apply)**.  
+**NOTE:** Can be used independently with Action: **[Pwd9000-ML/terraform-azurerm-apply](https://github.com/Pwd9000-ML/terraform-azurerm-apply)**.  
 
 ## Installation
 
