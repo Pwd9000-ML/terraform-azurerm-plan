@@ -1,4 +1,4 @@
-# Terraform Plan - GitHub Action (terraform-plan-azurerm)
+# Terraform Plan - GitHub Action (terraform-azurerm-plan)
 
 GitHub Action - Creates a Terraform plan with AzureRM backend and uploads plan as workspace artifact.  
 Connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workspace artifact. (Additionally TFSEC IaC scanning can be enabled).  
@@ -10,7 +10,7 @@ See my [detailed tutorial]() for more usage details.
 ## Usage
 
 ```yaml
-name: "TF-Plan"
+name: "TF-Deployment-01"
 on:
   workflow_dispatch:
   pull_request:
@@ -19,7 +19,7 @@ on:
 jobs:
   Plan_Dev:
     runs-on: ubuntu-latest
-    environment: Development #(Optional) If using GitHub Environments      
+    environment: null #(Optional) If using GitHub Environments          
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,14 +27,30 @@ jobs:
       - name: Dev TF Plan
         uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.0
         with:
-          path: 01_Foundation                ## (Optional) Specify path TF module relevant to repo root. Default="."
-          tf_version: "1.1.3"                ## (Optional) Specifies the Terraform version to use. Default="latest"
-          az_resource_group: TF-Core-Rg      ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
-          az_storage_acc: tfcorebackendsa    ## (Required) AZ backend - AZURE terraform backend storage acc 
-          az_container_name: ghdeploytfstate ## (Required) AZ backend - AZURE storage container hosting state files 
-          tf_key: foundation-dev             ## (Required) AZ backend - Specifies name that will be given to terraform state file 
-          tf_vars_file: config-dev.tfvars    ## (Required) Specifies Terraform TFVARS file name inside module path
-          enable_TFSEC: true                 ## (Optional)  Enable TFSEC IaC scans
+          path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
+          az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
+          az_storage_acc: "storage-account-name"   ## (Required) AZ backend - AZURE terraform backend storage acc 
+          az_container_name: "container-name"      ## (Required) AZ backend - AZURE storage container hosting state files 
+          tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file 
+          tf_vars_file: "tfvars-file-name"         ## (Required) Specifies Terraform TFVARS file name inside module path
+          enable_TFSEC: true                       ## (Optional)  Enable TFSEC IaC scans
+          arm_client_id: ${{ secrets.ARM_CLIENT_ID }}             ## (Required) ARM Client ID 
+          arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
+          arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
+          arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}             ## (Required) ARM Tenant ID
+
+  Apply_Dev:
+    needs: Plan_Dev
+    runs-on: ubuntu-latest
+    environment: Development #(Optional) If using GitHub Environments      
+    steps:
+      - name: Dev TF Deploy
+        uses: Pwd9000-ML/terraform-azurerm-apply@v1.0.0
+        with:
+          az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
+          az_storage_acc: "storage-account-name"   ## (Required) AZ backend - AZURE terraform backend storage acc 
+          az_container_name: "container-name"      ## (Required) AZ backend - AZURE storage container hosting state files 
+          tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file 
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }}             ## (Required) ARM Client ID 
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
           arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
@@ -45,7 +61,7 @@ jobs:
 
 | Input | Required |Description |Default |
 | ----- | -------- | ---------- | ------ |
-| `path` | FALSE | Specify path TF module relevant to repo root. | "." |
+| `path` | FALSE | Specify path to Terraform module relevant to repo root. | "." |
 | `tf_version` | FALSE | Specifies the Terraform version to use. | "latest" |
 | `az_resource_group` | TRUE | AZ backend - AZURE Resource Group name hosting terraform backend storage account | N/A |
 | `az_storage_acc` | TRUE | AZ backend - AZURE terraform backend storage account name | N/A |
@@ -53,10 +69,10 @@ jobs:
 | `tf_key` | TRUE | AZ backend - Specifies name that will be given to terraform state file | N/A |
 | `tf_vars_file` | TRUE | Specifies Terraform TFVARS file name inside module path | N/A |
 | `enable_TFSEC` | FALSE | Enable IaC TFSEC scan, results are posted to GitHub Project Security Tab. | FALSE |
-| `arm_client_id` | TRUE | The Azure Service Pricipal Client ID | N/A |
-| `arm_client_secret` | TRUE | The Azure Service Pricipal Secret | N/A |
-| `arm_subscription_id` | TRUE | The Azure Service Pricipal Subscription ID | N/A |
-| `arm_tenant_id` | TRUE | The Azure Service Pricipal Tenant ID | N/A |
+| `arm_client_id` | TRUE | The Azure Service Principal Client ID | N/A |
+| `arm_client_secret` | TRUE | The Azure Service Principal Secret | N/A |
+| `arm_subscription_id` | TRUE | The Azure Subscription ID | N/A |
+| `arm_tenant_id` | TRUE | The Azure Service Principal Tenant ID | N/A |
 
 ## Outputs
 
