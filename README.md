@@ -2,7 +2,7 @@
 
 Connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workflow artifact. (Additionally TFSEC IaC scanning can be enabled).  
 
-See my [detailed tutorial]() for more usage details.  
+See my [detailed tutorial](https://dev.to/pwd9000/multi-environment-azure-deployments-with-terraform-and-github-2450) for more usage details.  
 
 **NOTE:** Can be used independently with Action: **[Pwd9000-ML/terraform-azurerm-apply](https://github.com/Pwd9000-ML/terraform-azurerm-apply)**.  
 
