@@ -5,7 +5,7 @@ Connects to a remote Terraform backend in Azure, creates a terraform plan and up
 
 See my [detailed tutorial]() for more usage details.  
 
-**NOTE:** This plan is a **Child**-Action of **Parent**-Action: **[Pwd9000-ML/terraform-azurerm]()**. Can be used independently as well with **Child**-Action: **[Pwd9000-ML/terraform-azurerm-apply]()**.  
+**NOTE:** This plan is a **Child**-Action of **Parent**-Action: **[Pwd9000-ML/terraform-azurerm]()**. Can be used independently as well with **Child**-Action: **[Pwd9000-ML/terraform-azurerm-apply](https://github.com/Pwd9000-ML/terraform-azurerm-apply)**.  
 
 ## Usage
 
