@@ -42,7 +42,7 @@ inputs:
   enable_TFSEC:
     description: '(Optional) Enables TFSEC IaC scans and code quality checks on Terraform configurations'
     required: false
-    type: bool
+    type: boolean
     default: false
 
   arm_client_id:
@@ -81,13 +81,13 @@ runs:
       working-directory: ${{ inputs.path }}
 
     - name: Scan IaC - tfsec
-      if: ${{ inputs.enable_TFSEC == true }}
+      if: ${{ inputs.enable_TFSEC }}
       uses: tfsec/tfsec-sarif-action@v0.0.6
       with:
         sarif_file: tfsec.sarif
 
     - name: Upload SARIF file
-      if: ${{ inputs.enable_TFSEC == true }}
+      if: ${{ inputs.enable_TFSEC }}
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: tfsec.sarif
