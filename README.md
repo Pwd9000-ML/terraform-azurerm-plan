@@ -11,7 +11,7 @@ See my [detailed tutorial](https://dev.to/pwd9000/multi-environment-azure-deploy
 ```yaml
 steps:
   - name: Dev TF Plan
-    uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.0
+    uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.3
     with:
         path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
         az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Dev TF Plan
-        uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.0
+        uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.3
         with:
           path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
@@ -66,7 +66,7 @@ jobs:
     environment: Development #(Optional) If using GitHub Environments      
     steps:
       - name: Dev TF Deploy
-        uses: Pwd9000-ML/terraform-azurerm-apply@v1.0.0
+        uses: Pwd9000-ML/terraform-azurerm-apply@v1.0.2
         with:
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
           az_storage_acc: "storage-account-name"   ## (Required) AZ backend - AZURE terraform backend storage acc 
