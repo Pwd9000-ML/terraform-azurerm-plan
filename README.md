@@ -19,7 +19,7 @@ steps:
         az_container_name: "container-name"      ## (Required) AZ backend - AZURE storage container hosting state files 
         tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact
         tf_vars_file: "tfvars-file-name"         ## (Required) Specifies Terraform TFVARS file name inside module path
-        enable_TFSEC: true                       ## (Optional)  Enable TFSEC IaC scans
+        enable_TFSEC: true                       ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
         arm_client_id: ${{ secrets.ARM_CLIENT_ID }}             ## (Required) ARM Client ID 
         arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
         arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
@@ -86,7 +86,9 @@ The terraform apply action will download and apply the artifact created by the p
 
 **NOTE:** If `enable_TFSEC` is set to `true` on plan stage, Terraform IaC will be scanned using TFSEC and results are published to the GitHub Project `Security` tab:  
 
-![image.png](https://raw.githubusercontent.com/Pwd9000-ML/terraform-azurerm-plan/master/assets/tfsec.png)
+![image.png](https://raw.githubusercontent.com/Pwd9000-ML/terraform-azurerm-plan/master/assets/tfsec.png)  
+
+If using a private repository, GitHub enterprise is needed when enabling TFSEC. However if a public repository is used, code analysis is included and TFSEC can be enabled on public repositories without the need for a GitHub enterprise account.  
 
 ## Inputs
 
@@ -99,7 +101,7 @@ The terraform apply action will download and apply the artifact created by the p
 | `az_container_name` | TRUE | AZ backend - AZURE storage container hosting state files  | N/A |
 | `tf_key` | TRUE | AZ backend - Specifies name that will be given to terraform state file and plan artifact| N/A |
 | `tf_vars_file` | TRUE | Specifies Terraform TFVARS file name inside module path | N/A |
-| `enable_TFSEC` | FALSE | Enable IaC TFSEC scan, results are posted to GitHub Project Security Tab. | FALSE |
+| `enable_TFSEC` | FALSE | Enable IaC TFSEC scan, results are posted to GitHub Project Security Tab. (Private repos require GitHub enterprise). | FALSE |
 | `arm_client_id` | TRUE | The Azure Service Principal Client ID | N/A |
 | `arm_client_secret` | TRUE | The Azure Service Principal Secret | N/A |
 | `arm_subscription_id` | TRUE | The Azure Subscription ID | N/A |
