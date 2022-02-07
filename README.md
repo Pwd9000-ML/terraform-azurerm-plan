@@ -2,7 +2,7 @@
 
 Connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workflow artifact. (Additionally TFSEC IaC scanning can be enabled).  
 
-See my [detailed tutorial](https://dev.to/pwd9000/multi-environment-azure-deployments-with-terraform-and-github-2450) for more usage details.  
+See my [detailed tutorial](https://dev.to/pwd9000/multi-environment-azure-deployments-with-terraform-and-github-part-2-pdl) for more usage details.  
 
 **NOTE:** Can be used independently with Action: **[Pwd9000-ML/terraform-azurerm-apply](https://github.com/marketplace/actions/terraform-apply-for-azure)**.  
 
@@ -11,7 +11,7 @@ See my [detailed tutorial](https://dev.to/pwd9000/multi-environment-azure-deploy
 ```yaml
 steps:
   - name: Dev TF Plan
-    uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.3
+    uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.4
     with:
         path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
         az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
@@ -24,6 +24,7 @@ steps:
         arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
         arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
         arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}             ## (Required) ARM Tenant ID
+        github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) ${{ secrets.GITHUB_TOKEN }} already has permissions, but if using own token, ensure repo scope.
 ```
 
 ## Usage
@@ -34,6 +35,9 @@ Usage example of a terraform plan with apply.
 name: "TF-Deployment-01"
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - master
 
 jobs:
   Plan_Dev:
@@ -44,7 +48,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Dev TF Plan
-        uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.3
+        uses: Pwd9000-ML/terraform-azurerm-plan@v1.0.4
         with:
           path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
@@ -57,6 +61,7 @@ jobs:
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
           arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}             ## (Required) ARM Tenant ID
+          github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) to comment output on PR's. ${{ secrets.GITHUB_TOKEN }} already has permissions.
 
   Apply_Dev:
     needs: Plan_Dev
@@ -104,12 +109,18 @@ If using a private repository, GitHub enterprise is needed when enabling TFSEC. 
 | `arm_client_secret` | TRUE | The Azure Service Principal Secret | N/A |
 | `arm_subscription_id` | TRUE | The Azure Subscription ID | N/A |
 | `arm_tenant_id` | TRUE | The Azure Service Principal Tenant ID | N/A |
+| `github_token` | TRUE | Specify GITHUB TOKEN, only used in PRs to comment outputs such as plan, fmt, init and validate. `${{ secrets.GITHUB_TOKEN }}` already has permissions, but if using own token, ensure repo scope. | N/A |
 
 ## Outputs
 
 None.  
 
 * Plan is uploaded to workflow as an artifact. (Can be deployed using `Pwd9000-ML/terraform-azurerm-apply` Action.)
+* In a Pull Request, `plan` output will be added as a comment on the PR. Additionally failures on `fmt`, `init` and `validate` will also added to the PR.
+
+## output plan to PUll Request example
+
+![image.png](https://raw.githubusercontent.com/Pwd9000-ML/terraform-azurerm-plan/master/assets/pr.png)  
 
 ## Versions of runner that can be used
 
