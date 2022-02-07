@@ -24,7 +24,7 @@ steps:
         arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
         arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
         arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}             ## (Required) ARM Tenant ID
-        github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) ${{ secrets.GITHUB_TOKEN }} already has permissions, but if using own token, ensure repo scope.
+        github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) Needed to comment output on PR's. ${{ secrets.GITHUB_TOKEN }} already has permissions.
 ```
 
 ## Usage
@@ -61,7 +61,7 @@ jobs:
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
           arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}             ## (Required) ARM Tenant ID
-          github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) to comment output on PR's. ${{ secrets.GITHUB_TOKEN }} already has permissions.
+          github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) Needed to comment output on PR's. ${{ secrets.GITHUB_TOKEN }} already has permissions.
 
   Apply_Dev:
     needs: Plan_Dev
@@ -109,7 +109,7 @@ If using a private repository, GitHub enterprise is needed when enabling TFSEC. 
 | `arm_client_secret` | TRUE | The Azure Service Principal Secret | N/A |
 | `arm_subscription_id` | TRUE | The Azure Subscription ID | N/A |
 | `arm_tenant_id` | TRUE | The Azure Service Principal Tenant ID | N/A |
-| `github_token` | TRUE | Specify GITHUB TOKEN, only used in PRs to comment outputs such as plan, fmt, init and validate. `${{ secrets.GITHUB_TOKEN }}` already has permissions, but if using own token, ensure repo scope. | N/A |
+| `github_token` | TRUE | Specify GITHUB TOKEN, only used in PRs to comment outputs such as `plan`, `fmt`, `init` and `validate`. `${{ secrets.GITHUB_TOKEN }}` already has permissions, but if using own token, ensure repo scope. | N/A |
 
 ## Outputs
 
