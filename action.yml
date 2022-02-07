@@ -61,6 +61,10 @@ inputs:
     description: 'Specifies the Azure ARM TENANT ID.'
     required: true
 
+  github_token:
+    description: 'Specify a valid GITHUB TOKEN.'
+    required: true
+
 # https://actions-cool.github.io/github-action-branding/
 branding:
   icon: 'align-left'
@@ -78,6 +82,7 @@ runs:
           echo "ARM_CLIENT_SECRET=${{ inputs.arm_client_secret }}" >> $GITHUB_ENV
           echo "ARM_SUBSCRIPTION_ID=${{ inputs.arm_subscription_id }}" >> $GITHUB_ENV
           echo "ARM_TENANT_ID=${{ inputs.arm_tenant_id }}" >> $GITHUB_ENV
+          echo "GITHUB_TOKEN"=${{ inputs.github_token }}" >> $GITHUB_ENV
       working-directory: ${{ inputs.path }}
 
     - name: Scan IaC - tfsec
@@ -107,8 +112,6 @@ runs:
     - name: Post Format
       if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.fmt.outcome == 'success' || steps.fmt.outcome == 'failure')
       uses: robburger/terraform-pr-commenter@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         commenter_type: fmt
         commenter_input: ${{ format('{0}{1}', steps.fmt.outputs.stdout, steps.fmt.outputs.stderr) }}
@@ -123,8 +126,6 @@ runs:
     - name: Post Init
       if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.init.outcome == 'success' || steps.init.outcome == 'failure')
       uses: robburger/terraform-pr-commenter@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         commenter_type: init
         commenter_input: ${{ format('{0}{1}', steps.init.outputs.stdout, steps.init.outputs.stderr) }}
@@ -139,8 +140,6 @@ runs:
     - name: Post Validate
       if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.validate.outcome == 'success' || steps.validate.outcome == 'failure')
       uses: robburger/terraform-pr-commenter@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         commenter_type: validate
         commenter_input: ${{ format('{0}{1}', steps.validate.outputs.stdout, steps.validate.outputs.stderr) }}
@@ -155,8 +154,6 @@ runs:
     - name: Post Plan
       if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.plan.outcome == 'success' || steps.plan.outcome == 'failure')
       uses: robburger/terraform-pr-commenter@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         commenter_type: plan
         commenter_input: ${{ format('{0}{1}', steps.plan.outputs.stdout, steps.plan.outputs.stderr) }}
