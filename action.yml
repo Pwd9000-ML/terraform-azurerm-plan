@@ -107,7 +107,6 @@ runs:
       id: fmt
       run: terraform fmt --check --recursive
       working-directory: ${{ inputs.path }}
-      continue-on-error: true
 
     - name: Post Format
       if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.fmt.outcome == 'success' || steps.fmt.outcome == 'failure')
