@@ -118,7 +118,7 @@ None.
 * Plan is uploaded to workflow as an artifact. (Can be deployed using `Pwd9000-ML/terraform-azurerm-apply` Action.)
 * In a Pull Request, `plan` output will be added as a comment on the PR. Additionally failures on `fmt`, `init` and `validate` will also added to the PR.
 
-## output plan to PUll Request example
+## Plan output to Pull Request
 
 ![image.png](https://raw.githubusercontent.com/Pwd9000-ML/terraform-azurerm-plan/master/assets/pr.png)  
 
