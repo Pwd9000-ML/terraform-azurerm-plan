@@ -82,7 +82,7 @@ runs:
           echo "ARM_CLIENT_SECRET=${{ inputs.arm_client_secret }}" >> $GITHUB_ENV
           echo "ARM_SUBSCRIPTION_ID=${{ inputs.arm_subscription_id }}" >> $GITHUB_ENV
           echo "ARM_TENANT_ID=${{ inputs.arm_tenant_id }}" >> $GITHUB_ENV
-          echo "GITHUB_TOKEN"=${{ inputs.github_token }}" >> $GITHUB_ENV
+          echo "GITHUB_TOKEN=${{ inputs.github_token }}" >> $GITHUB_ENV
       working-directory: ${{ inputs.path }}
 
     - name: Scan IaC - tfsec
