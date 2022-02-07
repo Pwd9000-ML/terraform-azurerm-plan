@@ -100,8 +100,19 @@ runs:
     - name: Terraform Format
       shell: bash
       id: fmt
-      run: terraform fmt --check
+      run: terraform fmt --check --recursive
       working-directory: ${{ inputs.path }}
+      continue-on-error: true
+
+    - name: Post Format
+      if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.fmt.outcome == 'success' || steps.fmt.outcome == 'failure')
+      uses: robburger/terraform-pr-commenter@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        commenter_type: fmt
+        commenter_input: ${{ format('{0}{1}', steps.fmt.outputs.stdout, steps.fmt.outputs.stderr) }}
+        commenter_exitcode: ${{ steps.fmt.outputs.exitcode }}
 
     - name: Terraform Init
       shell: bash
@@ -109,17 +120,47 @@ runs:
       run: terraform init --backend-config="storage_account_name=${{ inputs.az_storage_acc }}" --backend-config="container_name=${{ inputs.az_container_name }}" --backend-config="resource_group_name=${{ inputs.az_resource_group }}" --backend-config="key=${{ inputs.tf_key }}"
       working-directory: ${{ inputs.path }}
 
+    - name: Post Init
+      if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.init.outcome == 'success' || steps.init.outcome == 'failure')
+      uses: robburger/terraform-pr-commenter@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        commenter_type: init
+        commenter_input: ${{ format('{0}{1}', steps.init.outputs.stdout, steps.init.outputs.stderr) }}
+        commenter_exitcode: ${{ steps.init.outputs.exitcode }}
+
     - name: Terraform Validate
       shell: bash
       id: validate
       run: terraform validate
       working-directory: ${{ inputs.path }}
 
+    - name: Post Validate
+      if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.validate.outcome == 'success' || steps.validate.outcome == 'failure')
+      uses: robburger/terraform-pr-commenter@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        commenter_type: validate
+        commenter_input: ${{ format('{0}{1}', steps.validate.outputs.stdout, steps.validate.outputs.stderr) }}
+        commenter_exitcode: ${{ steps.validate.outputs.exitcode }}
+
     - name: Terraform Plan
       shell: bash
       id: plan
       run: terraform plan --var-file=${{ inputs.tf_vars_file }} --out=plan.tfplan
       working-directory: ${{ inputs.path }}
+
+    - name: Post Plan
+      if: always() && (github.ref != 'refs/heads/master' || github.ref != 'refs/heads/main') && (steps.plan.outcome == 'success' || steps.plan.outcome == 'failure')
+      uses: robburger/terraform-pr-commenter@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        commenter_type: plan
+        commenter_input: ${{ format('{0}{1}', steps.plan.outputs.stdout, steps.plan.outputs.stderr) }}
+        commenter_exitcode: ${{ steps.plan.outputs.exitcode }}
 
     - name: Compress TF Plan artifact
       shell: bash
