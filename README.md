@@ -31,7 +31,7 @@ steps:
 
 ## Examples
 
-See the following [GitHub repository](https://github.com/Pwd9000-ML/Azure-Terraform-Deployments) for a full working demo of the usage of this action.
+Check out the following [GitHub repository](https://github.com/Pwd9000-ML/Azure-Terraform-Deployments) for a full working demo and usage examples of this action under a workflow called [Marketplace_Example.yml](https://github.com/Pwd9000-ML/Azure-Terraform-Deployments/blob/master/.github/workflows/Marketplace_Example.yml).
 
 ## Usage Example 1 - Deploy Plan and Apply (BUILD)
 
