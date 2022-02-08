@@ -1,6 +1,6 @@
 # Terraform Plan - GitHub Action (terraform-azurerm-plan)
 
-This Action can be used to create a Terraform **Deploy Plan** or **Destroy Plan** based on input parameter `plan_type`. The action connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workflow artifact. (Additionally TFSEC IaC scanning can be enabled).  
+This Action can be used to create a Terraform **Deploy Plan** or **Destroy Plan** based on input parameter `plan_mode`. The action connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workflow artifact. (Additionally TFSEC IaC scanning can be enabled).  
 
 See my [detailed tutorial](https://dev.to/pwd9000/multi-environment-azure-deployments-with-terraform-and-github-part-2-pdl) for more usage details.  
 
@@ -14,7 +14,7 @@ steps:
     uses: Pwd9000-ML/terraform-azurerm-plan@v1.1.0
     with:
       path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
-      plan_type: "deploy"                      ## (Optional) Specify plan type. Valid options are "deploy" or "destroy". Default="deploy"
+      plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
       tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
       tf_vars_file: "tfvars-file-name"         ## (Optional) Specifies Terraform TFVARS file name inside module path
       tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact
@@ -53,7 +53,7 @@ jobs:
         uses: Pwd9000-ML/terraform-azurerm-plan@v1.1.0
         with:
           path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
-          plan_type: "deploy"                      ## (Optional) Specify plan type. Valid options are "deploy" or "destroy". Default="deploy"
+          plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
           tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
           tf_vars_file: "tfvars-file-name"         ## (Optional) Specifies Terraform TFVARS file name inside module path. Default=""
           tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact
@@ -75,7 +75,7 @@ jobs:
       - name: Dev TF Deploy
         uses: Pwd9000-ML/terraform-azurerm-apply@v1.1.0
         with:
-          plan_type: "deploy"                      ## (Optional) Specify plan type. Valid options are "deploy" or "destroy". Default="deploy"
+          plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
           az_storage_acc: "storage-account-name"   ## (Required) AZ backend - AZURE terraform backend storage acc 
           az_container_name: "container-name"      ## (Required) AZ backend - AZURE storage container hosting state files 
@@ -110,7 +110,7 @@ jobs:
         uses: Pwd9000-ML/terraform-azurerm-plan@v1.1.0
         with:
           path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
-          plan_type: "destroy"                     ## (Optional) Specify plan type. Valid options are "deploy" or "destroy". Default="deploy"
+          plan_mode: "destroy"                     ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
           tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
           tf_vars_file: "tfvars-file-name"         ## (Optional) Specifies Terraform TFVARS file name inside module path. Default=""
           tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact
@@ -132,7 +132,7 @@ jobs:
       - name: Dev TF Destroy
         uses: Pwd9000-ML/terraform-azurerm-apply@v1.1.0
         with:
-          plan_type: "destroy"                     ## (Optional) Specify plan type. Valid options are "deploy" or "destroy". Default="deploy"
+          plan_mode: "destroy"                     ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
           az_storage_acc: "storage-account-name"   ## (Required) AZ backend - AZURE terraform backend storage acc 
           az_container_name: "container-name"      ## (Required) AZ backend - AZURE storage container hosting state files 
@@ -147,8 +147,8 @@ In both examples the terraform plan will be created and is compressed and publis
 
 ![image.png](https://raw.githubusercontent.com/Pwd9000-ML/terraform-azurerm-plan/master/assets/artifact.png)  
 
-The artifact will either contain a deployment plan if `plan_type: "deploy"` is used, or a destroy plan if `plan_type: "destroy"` is used.
-The terraform apply action will download and apply the artifact created by the plan action using the same `tf_key` and will start a deploy or destroy action based on the `plan_type`.  
+The artifact will either contain a deployment plan if `plan_mode: "deploy"` is used, or a destroy plan if `plan_mode: "destroy"` is used.
+The terraform apply action will download and apply the artifact created by the plan action using the same `tf_key` and will start a deploy or destroy action based on the `plan_mode`.  
 
 **NOTE:** If `enable_TFSEC` is set to `true` on plan stage, Terraform IaC will be scanned using TFSEC and results are published to the GitHub Project `Security` tab:  
 
@@ -161,9 +161,9 @@ If using a private repository, GitHub enterprise is needed when enabling TFSEC. 
 | Input | Required |Description |Default |
 | ----- | -------- | ---------- | ------ |
 | `path` | FALSE | Specify path to Terraform module relevant to repo root. | "." |
-| `plan_type` | FALSE | Specify plan type. Valid options are `deploy` or `destroy`. | "deploy" |
+| `plan_mode` | FALSE | Specify plan mode. Valid options are `deploy` or `destroy`. | "deploy" |
 | `tf_version` | FALSE | Specifies the Terraform version to use. | "latest" |
-| `tf_vars_file` | FALSE | Specifies Terraform TFVARS file name inside module path. Not needed if `deploy_plan: "destroy"` | "" |
+| `tf_vars_file` | FALSE | Specifies Terraform TFVARS file name inside module path. Not needed if `plan_mode: "destroy"` | "" |
 | `tf_key` | TRUE | AZ backend - Specifies name that will be given to terraform state file and plan artifact| N/A |
 | `enable_TFSEC` | FALSE | Enable IaC TFSEC scan, results are posted to GitHub Project Security Tab. (Private repos require GitHub enterprise). | FALSE |
 | `az_resource_group` | TRUE | AZ backend - AZURE Resource Group name hosting terraform backend storage account | N/A |
