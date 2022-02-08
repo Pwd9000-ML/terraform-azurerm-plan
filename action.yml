@@ -6,19 +6,19 @@ inputs:
     description: '(Optional) Specifies the path of the root terraform module.'
     required: false
     type: string
-    default: "."
+    default: .
 
   plan_mode:
     description: '(Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default=deploy.'
     required: false
     type: string
-    default: "deploy"
+    default: deploy
 
   tf_version:
     description: '(Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
     required: false
     type: string
-    default: "latest"
+    default: latest
 
   tf_vars_file:
     description: '(Required) Specifies the Terraform TFVARS file relevant to module path.'
@@ -152,14 +152,14 @@ runs:
         commenter_exitcode: ${{ steps.validate.outputs.exitcode }}
 
     - name: Terraform Plan Deploy
-      if: ${{ github.event.inputs.plan_mode == 'deploy' }}
+      if: ${{ inputs.plan_mode == 'deploy' }}
       shell: bash
       id: deploy_plan
       run: terraform plan --var-file=${{ inputs.tf_vars_file }} --out=deploy_plan.tfplan
       working-directory: ${{ inputs.path }}
 
     - name: PR Plan Deploy
-      if: github.event_name == 'pull_request' && ${{ github.event.inputs.plan_mode == 'deploy' }}
+      if: github.event_name == 'pull_request' && ${{ inputs.plan_mode == 'deploy' }}
       uses: robburger/terraform-pr-commenter@v1
       with:
         commenter_type: plan
@@ -167,14 +167,14 @@ runs:
         commenter_exitcode: ${{ steps.deploy_plan.outputs.exitcode }}
 
     - name: Terraform Plan Destroy
-      if: ${{ github.event.inputs.plan_mode != 'deploy' }}
+      if: ${{ inputs.plan_mode != 'deploy' }}
       shell: bash
       id: destroy_plan
       run: terraform plan --var-file=${{ inputs.tf_vars_file }} --destroy --out=destroy_plan.tfplan
       working-directory: ${{ inputs.path }}
 
     - name: PR Plan Destroy
-      if: github.event_name == 'pull_request' && ${{ github.event.inputs.plan_mode != 'deploy' }}
+      if: github.event_name == 'pull_request' && ${{ inputs.plan_mode != 'deploy' }}
       uses: robburger/terraform-pr-commenter@v1
       with:
         commenter_type: plan
