@@ -18,7 +18,7 @@ steps:
       tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
       tf_vars_file: "tfvars-file-name"         ## (Required) Specifies Terraform TFVARS file name inside module path
       tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact
-      enable_TFSEC: true                       ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
+      enable_TFSEC: true                       ## (Optional) Enable TFSEC IaC scans (Private repo requires GitHub enterprise). Default=false
       az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage account
       az_storage_acc: "storage-account-name"   ## (Required) AZ backend - AZURE terraform backend storage account
       az_container_name: "container-name"      ## (Required) AZ backend - AZURE storage container hosting state files 
