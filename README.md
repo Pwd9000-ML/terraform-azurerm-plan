@@ -163,7 +163,7 @@ If using a private repository, GitHub enterprise is needed when enabling TFSEC. 
 | `path` | FALSE | Specify path to Terraform module relevant to repo root. | "." |
 | `plan_type` | FALSE | Specify plan type. Valid options are `deploy` or `destroy`. | "deploy" |
 | `tf_version` | FALSE | Specifies the Terraform version to use. | "latest" |
-| `tf_vars_file` | TRUE | Specifies Terraform TFVARS file name inside module path | N/A |
+| `tf_vars_file` | FALSE | Specifies Terraform TFVARS file name inside module path. Not needed if `deploy_plan: "destroy"` | "" |
 | `tf_key` | TRUE | AZ backend - Specifies name that will be given to terraform state file and plan artifact| N/A |
 | `enable_TFSEC` | FALSE | Enable IaC TFSEC scan, results are posted to GitHub Project Security Tab. (Private repos require GitHub enterprise). | FALSE |
 | `az_resource_group` | TRUE | AZ backend - AZURE Resource Group name hosting terraform backend storage account | N/A |
