@@ -159,7 +159,7 @@ runs:
       working-directory: ${{ inputs.path }}
 
     - name: PR Plan Deploy
-      if: ${{ inputs.plan_mode == 'deploy' }} || github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request'
       uses: robburger/terraform-pr-commenter@v1
       with:
         commenter_type: plan
@@ -173,13 +173,13 @@ runs:
       run: terraform plan --var-file=${{ inputs.tf_vars_file }} --destroy --out=destroy_plan.tfplan
       working-directory: ${{ inputs.path }}
 
-    - name: PR Plan Destroy
-      if: ${{ inputs.plan_mode == 'destroy' }} || github.event_name == 'pull_request'
-      uses: robburger/terraform-pr-commenter@v1
-      with:
-        commenter_type: plan
-        commenter_input: ${{ format('{0}{1}', steps.destroy_plan.outputs.stdout, steps.destroy_plan.outputs.stderr) }}
-        commenter_exitcode: ${{ steps.destroy_plan.outputs.exitcode }}
+    #- name: PR Plan Destroy
+    #  if: ${{ inputs.plan_mode == 'destroy' }} || github.event_name == 'pull_request'
+    #  uses: robburger/terraform-pr-commenter@v1
+    #  with:
+    #    commenter_type: plan
+    #    commenter_input: ${{ format('{0}{1}', steps.destroy_plan.outputs.stdout, steps.destroy_plan.outputs.stderr) }}
+    #    commenter_exitcode: ${{ steps.destroy_plan.outputs.exitcode }}
 
     - name: Compress TF Plan artifact
       shell: bash
