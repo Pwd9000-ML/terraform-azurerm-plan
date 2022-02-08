@@ -174,7 +174,7 @@ runs:
       working-directory: ${{ inputs.path }}
 
     - name: PR Plan Destroy
-      if: (github.event_name == 'pull_request' && ${{ inputs.plan_mode == 'destroy' }})
+      if: (github.event_name == 'pull_request' && ${{ inputs.plan_mode != 'deploy' }})
       uses: robburger/terraform-pr-commenter@v1
       with:
         commenter_type: plan
