@@ -21,7 +21,7 @@ inputs:
     default: "latest"
 
   tf_vars_file:
-    description: '(Required) Specifies the Terraform TFVARS file.'
+    description: '(Optional) Specifies the Terraform TFVARS file.'
     required: false
     type: string
     default: ""
