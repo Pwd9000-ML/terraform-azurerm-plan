@@ -24,7 +24,7 @@ inputs:
     description: '(Required) Specifies the Terraform TFVARS file.'
     required: false
     type: string
-    default: ""
+    default: null
 
   tf_key:
     description: '(Required) Specifies the Terraform state file name for this plan.'
@@ -152,10 +152,17 @@ runs:
         commenter_exitcode: ${{ steps.validate.outputs.exitcode }}
 
     - name: Terraform Plan Deploy
-      if: ${{ inputs.plan_mode == 'deploy' }}
+      if: ${{ inputs.plan_mode == 'deploy' }} && ${{ inputs.tf_vars_file != null }}
       shell: bash
       id: deploy_plan
       run: terraform plan --var-file=${{ inputs.tf_vars_file }} --out=deploy_plan.tfplan
+      working-directory: ${{ inputs.path }}
+
+    - name: Terraform Plan Deploy
+      if: ${{ inputs.plan_mode == 'deploy' }}
+      shell: bash
+      id: deploy_plan
+      run: terraform plan --out=deploy_plan.tfplan
       working-directory: ${{ inputs.path }}
 
     - name: PR Plan Deploy
