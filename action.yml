@@ -21,10 +21,9 @@ inputs:
     default: "latest"
 
   tf_vars_file:
-    description: '(Optional) Specifies the Terraform TFVARS file.'
-    required: false
+    description: '(Required) Specifies the Terraform TFVARS file.'
+    required: true
     type: string
-    default: null
 
   tf_key:
     description: '(Required) Specifies the Terraform state file name for this plan.'
@@ -170,7 +169,7 @@ runs:
       if: ${{ inputs.plan_mode == 'destroy' }}
       shell: bash
       id: destroy_plan
-      run: terraform plan --destroy --out=destroy_plan.tfplan
+      run: terraform plan --var-file=${{ inputs.tf_vars_file }} --destroy --out=destroy_plan.tfplan
       working-directory: ${{ inputs.path }}
 
     - name: PR Plan Destroy
