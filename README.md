@@ -16,7 +16,7 @@ steps:
       path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
       plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
       tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
-      tf_vars_file: "tfvars-file-name"         ## (Optional) Specifies Terraform TFVARS file name inside module path. Default=null
+      tf_vars_file: "tfvars-file-name"         ## (Required) Specifies Terraform TFVARS file name inside module path
       tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact
       enable_TFSEC: true                       ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
       az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage account
@@ -55,7 +55,7 @@ jobs:
           path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
           plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
           tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
-          tf_vars_file: "tfvars-file-name"         ## (Optional) Specifies Terraform TFVARS file name inside module path. Default=null
+          tf_vars_file: "tfvars-file-name"         ## (Required) Specifies Terraform TFVARS file name inside module path
           tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact
           enable_TFSEC: true                       ## (Optional) Enable TFSEC IaC scans (Private repo requires GitHub enterprise). Default=false
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage account
@@ -113,7 +113,7 @@ jobs:
           path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
           plan_mode: "destroy"                     ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
           tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
-          tf_vars_file: null                       ## (Optional) Specifies Terraform TFVARS file name inside module path. Default=null
+          tf_vars_file: "tfvars-file-name"         ## (Required) Specifies Terraform TFVARS file name inside module path
           tf_key: "state-file-name"                ## (Required) AZ backend - Specifies name that will be given to terraform state file and plan artifact
           enable_TFSEC: true                       ## (Optional) Enable TFSEC IaC scans (Private repo requires GitHub enterprise). Default=false
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage account
@@ -166,7 +166,7 @@ If using a private repository, GitHub enterprise is needed when enabling TFSEC. 
 | `path` | FALSE | Specify path to Terraform module relevant to repo root. | "." |
 | `plan_mode` | FALSE | Specify plan mode. Valid options are `deploy` or `destroy`. | "deploy" |
 | `tf_version` | FALSE | Specifies the Terraform version to use. | "latest" |
-| `tf_vars_file` | FALSE | Specifies Terraform TFVARS file name inside module path. Not needed if `plan_mode: "destroy"` | null |
+| `tf_vars_file` | TRUE | Specifies Terraform TFVARS file name inside module path. | N/A |
 | `tf_key` | TRUE | AZ backend - Specifies name that will be given to terraform state file and plan artifact| N/A |
 | `enable_TFSEC` | FALSE | Enable IaC TFSEC scan, results are posted to GitHub Project Security Tab. (Private repos require GitHub enterprise). | FALSE |
 | `az_resource_group` | TRUE | AZ backend - AZURE Resource Group name hosting terraform backend storage account | N/A |
