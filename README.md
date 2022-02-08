@@ -148,7 +148,7 @@ In both examples the terraform plan will be created and is compressed and publis
 ![image.png](https://raw.githubusercontent.com/Pwd9000-ML/terraform-azurerm-plan/master/assets/artifact.png)  
 
 The artifact will either contain a deployment plan if `plan_type: "deploy"` is used, or a destroy plan if `plan_type: "destroy"` is used.
-The terraform apply action will download and apply the artifact created by the plan action using the same `tf_key` and will either start a deployment or a destroy action based on the `plan_type`.  
+The terraform apply action will download and apply the artifact created by the plan action using the same `tf_key` and will start a deploy or destroy action based on the `plan_type`.  
 
 **NOTE:** If `enable_TFSEC` is set to `true` on plan stage, Terraform IaC will be scanned using TFSEC and results are published to the GitHub Project `Security` tab:  
 
