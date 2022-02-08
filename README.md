@@ -76,10 +76,11 @@ jobs:
         uses: Pwd9000-ML/terraform-azurerm-apply@v1.1.0
         with:
           plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
+          tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
+          tf_key: "state-file-name"                ## (Required) Specifies name of the terraform state file and plan artifact to download
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
           az_storage_acc: "storage-account-name"   ## (Required) AZ backend - AZURE terraform backend storage acc 
           az_container_name: "container-name"      ## (Required) AZ backend - AZURE storage container hosting state files 
-          tf_key: "state-file-name"                ## (Required) Specifies name of the terraform state file and plan artifact to download
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }}             ## (Required) ARM Client ID 
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
           arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
@@ -133,10 +134,11 @@ jobs:
         uses: Pwd9000-ML/terraform-azurerm-apply@v1.1.0
         with:
           plan_mode: "destroy"                     ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
+          tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
+          tf_key: "state-file-name"                ## (Required) Specifies name of the terraform state file and plan artifact to download
           az_resource_group: "resource-group-name" ## (Required) AZ backend - AZURE Resource Group hosting terraform backend storage acc 
           az_storage_acc: "storage-account-name"   ## (Required) AZ backend - AZURE terraform backend storage acc 
           az_container_name: "container-name"      ## (Required) AZ backend - AZURE storage container hosting state files 
-          tf_key: "state-file-name"                ## (Required) Specifies name of the terraform state file and plan artifact to download
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }}             ## (Required) ARM Client ID 
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## (Required)ARM Client Secret
           arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## (Required) ARM Subscription ID
