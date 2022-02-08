@@ -29,6 +29,10 @@ steps:
       github_token: ${{ secrets.GITHUB_TOKEN }} ## (Required) Needed to comment output on PR's. ${{ secrets.GITHUB_TOKEN }} already has permissions.
 ```
 
+## Examples
+
+See the following [GitHub repository](https://github.com/Pwd9000-ML/Azure-Terraform-Deployments) for a full working demo of the usage of this action.
+
 ## Usage Example 1 - Deploy Plan and Apply (BUILD)
 
 Usage example of a terraform deploy plan with applying the deploy (creating resources).
