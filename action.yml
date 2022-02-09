@@ -183,12 +183,12 @@ runs:
 
     - name: Compress TF Plan artifact
       shell: bash
-      run: zip -r ${{ inputs.tf_key }}.zip ./*
+      run: zip -r ${{ inputs.plan_mode }}${{ inputs.tf_key }}.zip ./*
       working-directory: ${{ inputs.path }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: "${{ inputs.tf_key }}"
-        path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
+        name: "${{ inputs.plan_mode }}-${{ inputs.tf_key }}"
+        path: "${{ inputs.path }}/${{ inputs.plan_mode }}${{ inputs.tf_key }}.zip"
         retention-days: 5
