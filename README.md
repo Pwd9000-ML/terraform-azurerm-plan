@@ -187,11 +187,14 @@ If using a private repository, GitHub enterprise is needed when enabling TFSEC. 
 None.  
 
 * Plan is uploaded to workflow as an artifact. (Can be deployed using `Pwd9000-ML/terraform-azurerm-apply` action.)
-* In a Pull Request, `plan` output will be added as a comment on the PR. Additionally failures on `fmt`, `init` and `validate` will also added to the PR.
+* In a Pull Request, `plan` output will be added as a comment on the PR. Additionally failures on `fmt`, `init` and `validate` will also be added to the PR.
 
 ## Plan output to Pull Request
 
 ![image.png](https://raw.githubusercontent.com/Pwd9000-ML/terraform-azurerm-plan/master/assets/pr.png)  
+
+The `github_token` input must be set for the PR comment to be added. `${{ secrets.GITHUB_TOKEN }}` already has permissions, but if using own token, ensure repo scope.  
+Plan failures on `fmt`, `init` and `validate` will also be added to the PR.
 
 ## Versions of runner that can be used
 
