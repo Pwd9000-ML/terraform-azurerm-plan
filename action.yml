@@ -104,7 +104,7 @@ runs:
         sarif_file: tfsec.sarif
 
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1.3.2
+      uses: hashicorp/setup-terraform@v2.0.0
       with:
         terraform_version: ${{ inputs.tf_version }}
         terraform_wrapper: true
@@ -187,7 +187,7 @@ runs:
       working-directory: ${{ inputs.path }}
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: "${{ inputs.plan_mode }}-${{ inputs.tf_key }}"
         path: "${{ inputs.path }}/${{ inputs.plan_mode }}${{ inputs.tf_key }}.zip"
