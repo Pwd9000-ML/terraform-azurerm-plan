@@ -51,7 +51,7 @@ jobs:
     environment: null #(Optional) If using GitHub Environments          
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.0.2
 
       - name: Dev TF Plan Deploy
         uses: Pwd9000-ML/terraform-azurerm-plan@v1.2.4
@@ -109,7 +109,7 @@ jobs:
     environment: null #(Optional) If using GitHub Environments          
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.0.2
 
       - name: Dev TF Plan Destroy
         uses: Pwd9000-ML/terraform-azurerm-plan@v1.2.4
