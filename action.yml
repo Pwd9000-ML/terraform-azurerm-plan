@@ -93,7 +93,7 @@ runs:
 
     - name: Scan IaC - tfsec
       if: ${{ inputs.enable_TFSEC == 'true' }}
-      uses: tfsec/tfsec-sarif-action@v0.1.0
+      uses: tfsec/tfsec-sarif-action@v0.1.3
       with:
         sarif_file: tfsec.sarif
 
@@ -117,7 +117,7 @@ runs:
 
     - name: PR Format
       if: github.event_name == 'pull_request'
-      uses: robburger/terraform-pr-commenter@v1
+      uses: robburger/terraform-pr-commenter@v1.5.0
       with:
         commenter_type: fmt
         commenter_input: ${{ format('{0}{1}', steps.fmt.outputs.stdout, steps.fmt.outputs.stderr) }}
@@ -131,7 +131,7 @@ runs:
 
     - name: PR Init
       if: github.event_name == 'pull_request'
-      uses: robburger/terraform-pr-commenter@v1
+      uses: robburger/terraform-pr-commenter@v1.5.0
       with:
         commenter_type: init
         commenter_input: ${{ format('{0}{1}', steps.init.outputs.stdout, steps.init.outputs.stderr) }}
@@ -145,7 +145,7 @@ runs:
 
     - name: PR Validate
       if: github.event_name == 'pull_request'
-      uses: robburger/terraform-pr-commenter@v1
+      uses: robburger/terraform-pr-commenter@v1.5.0
       with:
         commenter_type: validate
         commenter_input: ${{ format('{0}{1}', steps.validate.outputs.stdout, steps.validate.outputs.stderr) }}
@@ -160,7 +160,7 @@ runs:
 
     - name: PR Plan Deploy
       if: ${{ inputs.plan_mode == 'deploy' && github.event_name == 'pull_request' }}
-      uses: robburger/terraform-pr-commenter@v1
+      uses: robburger/terraform-pr-commenter@v1.5.0
       with:
         commenter_type: plan
         commenter_input: ${{ format('{0}{1}', steps.deploy_plan.outputs.stdout, steps.deploy_plan.outputs.stderr) }}
@@ -175,7 +175,7 @@ runs:
 
     - name: PR Plan Destroy
       if:  ${{ inputs.plan_mode != 'deploy' && github.event_name == 'pull_request' }} 
-      uses: robburger/terraform-pr-commenter@v1
+      uses: robburger/terraform-pr-commenter@v1.5.0
       with:
         commenter_type: plan
         commenter_input: ${{ format('{0}{1}', steps.destroy_plan.outputs.stdout, steps.destroy_plan.outputs.stderr) }}
@@ -187,7 +187,7 @@ runs:
       working-directory: ${{ inputs.path }}
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.0
       with:
         name: "${{ inputs.plan_mode }}-${{ inputs.tf_key }}"
         path: "${{ inputs.path }}/${{ inputs.plan_mode }}${{ inputs.tf_key }}.zip"
