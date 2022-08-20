@@ -1,5 +1,7 @@
 # Terraform Plan - GitHub Action (terraform-azurerm-plan)
 
+[![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
+
 This Action can be used to create a Terraform **Deploy Plan** or **Destroy Plan** based on input parameter `plan_mode`. The action connects to a remote Terraform backend in Azure, creates a terraform plan and uploads plan as a workflow artifact. (Additionally TFSEC IaC scanning can be enabled).  
 
 See my [detailed tutorial](https://dev.to/pwd9000/multi-environment-azure-deployments-with-terraform-and-github-part-2-pdl) for more usage details.  
