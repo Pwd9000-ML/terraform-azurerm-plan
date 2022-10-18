@@ -13,7 +13,7 @@ See my [detailed tutorial](https://dev.to/pwd9000/multi-environment-azure-deploy
 ```yaml
 steps:
   - name: Dev TF Plan
-    uses: Pwd9000-ML/terraform-azurerm-plan@v1.2.4
+    uses: Pwd9000-ML/terraform-azurerm-plan@v1.2.5
     with:
       path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
       plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
@@ -56,7 +56,7 @@ jobs:
         uses: actions/checkout@v3.0.2
 
       - name: Dev TF Plan Deploy
-        uses: Pwd9000-ML/terraform-azurerm-plan@v1.2.4
+        uses: Pwd9000-ML/terraform-azurerm-plan@v1.2.5
         with:
           path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
           plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
@@ -79,7 +79,7 @@ jobs:
     environment: Development #(Optional) If using GitHub Environments      
     steps:
       - name: Dev TF Deploy
-        uses: Pwd9000-ML/terraform-azurerm-apply@v1.2.4
+        uses: Pwd9000-ML/terraform-azurerm-apply@v1.2.5
         with:
           plan_mode: "deploy"                      ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
           tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
@@ -114,7 +114,7 @@ jobs:
         uses: actions/checkout@v3.0.2
 
       - name: Dev TF Plan Destroy
-        uses: Pwd9000-ML/terraform-azurerm-plan@v1.2.4
+        uses: Pwd9000-ML/terraform-azurerm-plan@v1.2.5
         with:
           path: "path-to-TFmodule"                 ## (Optional) Specify path TF module relevant to repo root. Default="."
           plan_mode: "destroy"                     ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
@@ -137,7 +137,7 @@ jobs:
     environment: Development #(Optional) If using GitHub Environments      
     steps:
       - name: Dev TF Destroy
-        uses: Pwd9000-ML/terraform-azurerm-apply@v1.2.4
+        uses: Pwd9000-ML/terraform-azurerm-apply@v1.2.5
         with:
           plan_mode: "destroy"                     ## (Optional) Specify plan mode. Valid options are "deploy" or "destroy". Default="deploy"
           tf_version: "latest"                     ## (Optional) Specifies version of Terraform to use. e.g: 1.1.0 Default="latest"
