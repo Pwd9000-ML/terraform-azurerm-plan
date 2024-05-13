@@ -187,7 +187,7 @@ runs:
       working-directory: ${{ inputs.path }}
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3.1.3
+      uses: actions/upload-artifact@v4.3.3
       with:
         name: "${{ inputs.plan_mode }}-${{ inputs.tf_key }}"
         path: "${{ inputs.path }}/${{ inputs.plan_mode }}${{ inputs.tf_key }}.zip"
